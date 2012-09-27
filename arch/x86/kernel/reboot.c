@@ -34,6 +34,9 @@
 void (*pm_power_off)(void);
 EXPORT_SYMBOL(pm_power_off);
 
+void (*myhypercall)(void);
+EXPORT_SYMBOL(myhypercall);
+
 static const struct desc_ptr no_idt = {};
 static int reboot_mode;
 enum reboot_type reboot_type = BOOT_KBD;
@@ -601,11 +604,12 @@ static void __machine_emergency_restart(int emergency)
 
 static void native_machine_restart(char *__unused)
 {
-	printk("machine restart\n");
+	printk("native machine restart overriden with myhypercall\n");
+        myhypercall(); 
 
-	if (!reboot_force)
+/*	if (!reboot_force)
 		machine_shutdown();
-	__machine_emergency_restart(0);
+	__machine_emergency_restart(0); */
 }
 
 static void native_machine_halt(void)
@@ -658,7 +662,10 @@ void machine_emergency_restart(void)
 
 void machine_restart(char *cmd)
 {
-	machine_ops.restart(cmd);
+        printk("machine restart overriden with myhypercall\n");
+        myhypercall();
+
+/*	machine_ops.restart(cmd);   */
 }
 
 void machine_halt(void)

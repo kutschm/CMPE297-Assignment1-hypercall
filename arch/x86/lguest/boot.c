@@ -1121,6 +1121,11 @@ static void lguest_power_off(void)
 	      LGUEST_SHUTDOWN_POWEROFF, 0, 0);
 }
 
+static void lguest_myhypercall(void)
+{
+   hcall(LHCALL_MYHYPERCALL, 0,0,0,0);
+}
+
 /*
  * Panicing.
  *
@@ -1412,6 +1417,7 @@ __init void lguest_init(void)
 	 */
 	pm_power_off = lguest_power_off;
 	machine_ops.restart = lguest_restart;
+        myhypercall = lguest_myhypercall;
 
 	/*
 	 * Now we're set up, call i386_start_kernel() in head32.c and we proceed

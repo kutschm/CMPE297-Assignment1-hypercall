@@ -120,6 +120,9 @@ static void do_hcall(struct lg_cpu *cpu, struct hcall_args *args)
 	case LHCALL_NOTIFY:
 		cpu->pending_notify = args->arg1;
 		break;
+        case LHCALL_MYHYPERCALL:
+                printk("myhypercall received\n");
+                break;
 	default:
 		/* It should be an architecture-specific hypercall. */
 		if (lguest_arch_do_hcall(cpu, args))
